@@ -3,6 +3,9 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -53,10 +56,10 @@ fun circleInside(
 /**
  * Средняя (3 балла)
  *
- * Определить, пройдет ли кирпич со сторонами а, b, c сквозь прямоугольное отверстие в стене со сторонами r и s.
+ * Определить, пройдет ли кирпич со сторнонами а, b, c сквозь прямоугольое отверстие в стене со сторонами r и s.
  * Стороны отверстия должны быть параллельны граням кирпича.
  * Считать, что совпадения длин сторон достаточно для прохождения кирпича, т.е., например,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int) = if (min(min(a, b), c) <= min(r, s) && max(r, s) >= a + b + c - min(min(a, b), c) - max(max(a, b), c)) true else false
