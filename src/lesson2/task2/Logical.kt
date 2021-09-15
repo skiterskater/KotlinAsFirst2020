@@ -3,6 +3,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 /**
@@ -22,8 +23,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
 fun isNumberHappy(number: Int): Boolean {
     val firstHalf = number / 100
     val secondHalf = number % 100
-    if ((firstHalf / 10 + firstHalf % 10) == (secondHalf / 10 + secondHalf % 10)) return true
-    return false
+    return ((firstHalf / 10 + firstHalf % 10) == (secondHalf / 10 + secondHalf % 10))
 }
 
 /**
@@ -33,7 +33,8 @@ fun isNumberHappy(number: Int): Boolean {
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+    (abs(x1 - x2) == abs(y1 - y2)) || (x1 == x2 || y1 == y2)
 
 
 /**

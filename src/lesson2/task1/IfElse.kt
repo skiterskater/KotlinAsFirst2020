@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -71,7 +72,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     val lastTwoDigits = age % 100
-    val lastDigit = lastTwoDigits % 10
+    val lastDigit = age % 10
     return when {
         lastTwoDigits in 11..19 -> "$age лет"
         lastDigit in 2..4 -> "$age года"
@@ -98,8 +99,8 @@ fun timeForHalfWay(
     val halfway = (s1 + s2 + s3) / 2
     return when {
         halfway <= s1 -> halfway / v1
-        halfway <= s2 + s1 -> t1 + (halfway - s1) / v2
-        else -> t2 + t1 + (halfway - s2 - s1) / v3
+        halfway <= s2 + s1 -> (halfway - s1) / v2 + t1
+        else -> (halfway - s2 - s1) / v3 + t1 + t2
     }
 }
 
@@ -137,7 +138,12 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    var danger = 0
+    if (kingX == rookX || kingY == rookY) danger = 1
+    if (abs(kingX - bishopX) == abs(kingY - bishopY)) danger += 2
+    return danger
+}
 
 /**
  * Простая (2 балла)
