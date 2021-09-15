@@ -4,6 +4,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
@@ -68,7 +69,16 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    val lastTwoDigits = age % 100
+    val lastDigit = lastTwoDigits % 10
+    return when {
+        lastTwoDigits in 11..19 -> "$age лет"
+        lastDigit in 2..4 -> "$age года"
+        lastDigit == 1 -> "$age год"
+        else -> "$age лет"
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -81,7 +91,17 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = TODO()
+): Double {
+    val s1 = v1 * t1
+    val s2 = v2 * t2
+    val s3 = v3 * t3
+    val halfway = (s1 + s2 + s3) / 2
+    return when {
+        halfway <= s1 -> halfway / v1
+        halfway <= s2 + s1 -> t1 + (halfway - s1) / v2
+        else -> t2 + t1 + (halfway - s2 - s1) / v3
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -96,7 +116,12 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int = TODO()
+): Int {
+    var danger = 0
+    if (kingX == rookX1 || kingY == rookY1) danger = 1
+    if (kingX == rookX2 || kingY == rookY2) danger += 2
+    return danger
+}
 
 /**
  * Простая (2 балла)
@@ -122,7 +147,21 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val minimumSide = minOf(a, b, c)
+    val maximumSide = maxOf(a, b, c)
+    val combinedLength = a + b + c
+    val thirdSide = combinedLength - minimumSide - maximumSide
+
+    return when {
+        maximumSide >= minimumSide + thirdSide -> -1
+        maximumSide.pow(2.0) < minimumSide.pow(2.0)
+                + thirdSide.pow(2.0) -> 0
+        maximumSide.pow(2.0) == minimumSide.pow(2.0)
+                + thirdSide.pow(2.0) -> 1
+        else -> 2
+    }
+}
 
 /**
  * Средняя (3 балла)
@@ -132,4 +171,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    val length = minOf(b, d) - maxOf(a, c)
+    if (length >= 0) return length
+    else return -1
+}
