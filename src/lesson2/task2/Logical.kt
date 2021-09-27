@@ -23,7 +23,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
 fun isNumberHappy(number: Int): Boolean {
     val firstHalf = number / 100
     val secondHalf = number % 100
-    return ((firstHalf / 10 + firstHalf % 10) == (secondHalf / 10 + secondHalf % 10))
+    return (firstHalf / 10 + firstHalf % 10 == secondHalf / 10 + secondHalf % 10)
 }
 
 /**
@@ -47,7 +47,7 @@ fun daysInMonth(month: Int, year: Int): Int {
     val months = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
     if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0))
         return 29
-    else return months[month - 1]
+    return months[month - 1]
 }
 
 /**
