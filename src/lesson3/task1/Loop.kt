@@ -2,7 +2,9 @@
 
 package lesson3.task1
 
-import kotlin.math.sqrt
+import java.lang.Math.pow
+import java.lang.Math.toIntExact
+import kotlin.math.*
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -81,7 +83,7 @@ fun digitNumber(n: Int): Int {
             i += 1
             k /= 10
         }
-        i
+        return i
     }
 }
 
@@ -91,11 +93,7 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int {
-    if (n < 1) return 0
-    if (n < 3) return 1
-    else return fib(n - 1) + fib(n - 2)
-}
+fun fib(n: Int): Int = ((((1 + sqrt(5.0)) / 2).pow(n) - ((1 - sqrt(5.0)) / 2).pow(n)) / sqrt(5.0)).toInt()
 
 /**
  * Простая (2 балла)
