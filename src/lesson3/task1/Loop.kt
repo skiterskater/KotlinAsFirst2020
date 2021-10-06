@@ -75,16 +75,14 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var i = 0
-    var k = abs(n)
-    return if (k == 0) 1
-    else {
-        while (k > 0) {
-            i += 1
-            k /= 10
-        }
-        return i
+    var i = 1
+    var k = abs(n) / 10
+    while (k > 0) {
+        i += 1
+        k /= 10
     }
+    return i
+
 }
 
 /**
@@ -114,14 +112,8 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var i: Int = n / 2
-    while (i > 1) {
-        if (n % i == 0) break
-        i--
-    }
-    return i
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
+
 
 /**
  * Простая (2 балла)
@@ -188,7 +180,7 @@ fun isPalindrome(n: Int): Boolean = TODO()
  */
 fun hasDifferentDigits(n: Int): Boolean {
     val i = n % 10
-    var k: Int = n / 10
+    var k = n / 10
     while (k > 0) {
         if (k % 10 != i) return true
         else
@@ -237,12 +229,8 @@ fun squareSequenceDigit(n: Int): Int {
             break
         i++
     }
-    var k = i * i
-    while (c > n) {
-        k /= 10
-        c--
-    }
-    return k % 10
+    val k = i * i
+    return lastDigit(c, n, k) % 10
 }
 
 /**
@@ -263,10 +251,16 @@ fun fibSequenceDigit(n: Int): Int {
             break
         i++
     }
-    var k = fib(i)
-    while (c > n) {
-        k /= 10
-        c--
+    val k = fib(i)
+    return lastDigit(c, n, k) % 10
+}
+
+fun lastDigit(c: Int, n: Int, k: Int): Int {
+    var c1 = c
+    var k1 = k
+    while (c1 > n) {
+        k1 /= 10
+        c1--
     }
-    return k % 10
+    return k1
 }
