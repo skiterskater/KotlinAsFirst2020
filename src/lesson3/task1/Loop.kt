@@ -73,7 +73,16 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    if (n == 0) return 1
+    var x = n
+    var k = 0
+    while (x != 0) {
+        x /= 10
+        k += 1
+    }
+    return k
+}
 
 /**
  * Простая (2 балла)
@@ -81,21 +90,42 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    if (n < 3) return 1
+    var a = 1
+    var b = 1
+    var c: Int
+    for (i in 3..n) {
+        c = a + b
+        a = b
+        b = c
+    }
+    return b
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    if (isPrime(n)) return n
+    var d = 2
+    var minDiv = n
+    while (d * d < n) {
+        if (n % d == 0 && d < minDiv) minDiv = d
+        d += 1
+    }
+    if (d * d == n) minDiv = d
+    return minDiv
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая (2 балла)
@@ -113,7 +143,18 @@ fun maxDivisor(n: Int): Int = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var n = x
+    var k = 0
+    while (n != 1) {
+        when {
+            n % 2 == 0 -> n /= 2
+            n % 2 != 0 -> n = 3 * n + 1
+        }
+        k += 1
+    }
+    return k
+}
 
 /**
  * Средняя (3 балла)
@@ -121,7 +162,7 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int = m / greatestCommonDivisor(m, n) * n
 
 
 /**
@@ -131,7 +172,18 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+
+fun greatestCommonDivisor(a: Int, b: Int): Int {
+    var x1 = a
+    var x2 = b
+    while (x1 != 0 && x2 != 0) {
+        if (x1 > x2) x1 %= x2
+        else x2 %= x1
+    }
+    return x1 + x2
+}
+
+fun isCoPrime(m: Int, n: Int): Boolean = greatestCommonDivisor(m, n) == 1
 
 /**
  * Средняя (3 балла)
@@ -140,7 +192,15 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var x = n
+    var reverted = 0
+    while (x != 0) {
+        reverted = reverted * 10 + x % 10
+        x /= 10
+    }
+    return reverted
+}
 
 /**
  * Средняя (3 балла)
@@ -151,7 +211,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя (3 балла)
@@ -161,7 +221,17 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var lastDigit = -1
+    var x = n
+    while (x != 0) {
+        val nextDigit = x % 10
+        if (lastDigit != -1 && nextDigit != lastDigit) return true
+        lastDigit = nextDigit
+        x /= 10
+    }
+    return false
+}
 
 /**
  * Средняя (4 балла)
@@ -194,7 +264,27 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+
+fun getDigit(n: Int, f: (n: Int) -> Int): Int {
+    var step = 1
+    var length = 0
+    while (true) {
+        length += digitNumber(f(step))
+        if (length >= n) {
+            break
+        }
+        step += 1
+    }
+    // Останавливаемся на шаге, на котором закончился прошлый цикл, укорачиваем длину, пока она не достигнет n.
+    var result = f(step)
+    while (length > n) {
+        result /= 10
+        length -= 1
+    }
+    return result % 10
+}
+
+fun squareSequenceDigit(n: Int): Int = getDigit(n, ::sqr)
 
 /**
  * Сложная (5 баллов)
@@ -205,4 +295,4 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int = getDigit(n, ::fib)
