@@ -94,9 +94,8 @@ fun fib(n: Int): Int {
     if (n < 3) return 1
     var a = 1
     var b = 1
-    var c: Int
     for (i in 3..n) {
-        c = a + b
+        val c = a + b
         a = b
         b = c
     }
@@ -113,7 +112,7 @@ fun minDivisor(n: Int): Int {
     var d = 2
     var minDiv = n
     while (d * d < n) {
-        if (n % d == 0 && d < minDiv) minDiv = d
+        if (n % d == 0 && d < minDiv) return d
         d += 1
     }
     if (d * d == n) minDiv = d
@@ -147,10 +146,8 @@ fun collatzSteps(x: Int): Int {
     var n = x
     var k = 0
     while (n != 1) {
-        when {
-            n % 2 == 0 -> n /= 2
-            n % 2 != 0 -> n = 3 * n + 1
-        }
+        if (n % 2 == 0) n /= 2
+        else n = 3 * n + 1
         k += 1
     }
     return k
