@@ -222,8 +222,9 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var x = n
     val result = mutableListOf<Int>()
-    while (x > 0) {
-        result += x % base
+    if (x == 0) result.add(x % base)
+    while (x != 0) {
+        result.add(x % base)
         x /= base
     }
     return result.reversed()
@@ -351,7 +352,7 @@ fun builder(n: Int): List<String> {
         val x1 = n / 1000
         if (x1 / 100 != 0) result.add(digitsThird[x1 / 100 - 1])
         if (x1 / 10 % 10 != 0 && x1 % 100 in 11..19) result.add(digitsFourth[x1 % 100 - 1])
-        else if (x1 / 10 != 0 && x1 % 100 != 0) result.add(digitsSecond[x1 / 10 % 10 - 1])
+        else if (x1 / 10 != 0 && x1 % 100 >= 10) result.add(digitsSecond[x1 / 10 % 10 - 1])
         if (x1 % 10 != 0 && x1 % 100 !in 11..19) result.add(digitsFirst[x1 % 10 - 1])
         result.add(formOfThousand(n / 1000))
     }
@@ -365,3 +366,4 @@ fun builder(n: Int): List<String> {
 }
 
 fun russian(n: Int): String = builder(n).joinToString(separator = " ")
+
