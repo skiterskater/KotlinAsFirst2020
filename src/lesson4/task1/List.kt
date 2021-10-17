@@ -122,15 +122,13 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
-    return if (v.isEmpty()) 0.0
-    else {
-        var k = 0.0
-        for ((index, element) in v.withIndex())
-            k += v[index].pow(2)
-        return sqrt(k)
-    }
+fun abs(v: List<Double>): Double = if (v.isEmpty()) 0.0 else {
+    var k = 0.0
+    for ((index, element) in v.withIndex())
+        k += v[index].pow(2)
+    sqrt(k)
 }
+
 
 /**
  * Простая (2 балла)
@@ -147,15 +145,13 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() /
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): List<Double> {
-    return if (list.isEmpty()) list
-    else {
-        val k = mean(list)
-        for (i in 0 until list.size)
-            list[i] -= k
-        return list
-    }
+fun center(list: MutableList<Double>): List<Double> = if (list.isEmpty()) list else {
+    val k = mean(list)
+    for (i in 0 until list.size)
+        list[i] -= k
+    list
 }
+
 
 /**
  * Средняя (3 балла)
@@ -164,15 +160,13 @@ fun center(list: MutableList<Double>): List<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int {
-    return if (a.isEmpty()) 0
-    else {
-        var c = 0
-        for (i in 0 until a.size)
-            c += a[i] * b[i]
-        return c
-    }
+fun times(a: List<Int>, b: List<Int>): Int = if (a.isEmpty()) 0 else {
+    var c = 0
+    for (i in 0 until a.size)
+        c += a[i] * b[i]
+    c
 }
+
 
 /**
  * Средняя (3 балла)
@@ -182,16 +176,14 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int {
-    return if (p.isEmpty()) 0
-    else {
-        var c = 0
-        for (i in 0 until p.size) {
-            c += (p[i] * x.toDouble().pow(i.toDouble())).toInt()
-        }
-        return c
+fun polynom(p: List<Int>, x: Int): Int = if (p.isEmpty()) 0 else {
+    var c = 0
+    for (i in 0 until p.size) {
+        c += (p[i] * x.toDouble().pow(i.toDouble())).toInt()
     }
+    c
 }
+
 
 /**
  * Средняя (3 балла)
@@ -203,7 +195,16 @@ fun polynom(p: List<Int>, x: Int): Int {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO() // {
+// return if (list.isEmpty()) list
+// else {
+//    for (i in 1 until list.size) {
+//        var list1 = list.sublist(0, i - 1)
+//list[i] += list1.sum
+//    }
+//    return list
+//}
+//}
 
 /**
  * Средняя (3 балла)
