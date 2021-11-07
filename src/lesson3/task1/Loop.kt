@@ -110,13 +110,11 @@ fun fib(n: Int): Int {
 fun minDivisor(n: Int): Int {
     if (isPrime(n)) return n
     var d = 2
-    var minDiv = n
-    while (d * d < n) {
-        if (n % d == 0 && d < minDiv) return d
+    while (d * d <= n) {
+        if (n % d == 0) return d
         d += 1
     }
-    if (d * d == n) minDiv = d
-    return minDiv
+    return d
 }
 
 /**
