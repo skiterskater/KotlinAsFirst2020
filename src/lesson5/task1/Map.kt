@@ -2,6 +2,10 @@
 
 package lesson5.task1
 
+import ru.spbstu.wheels.NullableMonad.filter
+import java.util.*
+import kotlin.math.pow
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -96,7 +100,15 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val result = mutableMapOf<Int, MutableList<String>>()
+    for ((firstName, grade) in grades) {
+        val currentGrade = result[grade]
+        if (currentGrade != null) currentGrade.add(firstName)
+        else result[grade] = mutableListOf(firstName)
+    }
+    return result
+}
 
 /**
  * Простая (2 балла)
@@ -108,7 +120,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((key, value) in a) {
+        if (b[key] != value) return false
+    }
+    return true
+}
 
 /**
  * Простая (2 балла)
@@ -125,7 +142,9 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+    for ((key, value) in b) {
+        if (a[key] == value) a.remove(key)
+    }
 }
 
 /**
@@ -135,7 +154,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
 
 /**
  * Средняя (3 балла)
@@ -166,7 +185,22 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    val count = mutableMapOf<String, Int>()
+    for ((stock, price) in stockPrices) {
+        val currentPrices = result[stock]
+        val currentAmount = count[stock]
+        if (currentAmount == null) count[stock] = 1
+        else count[stock] = currentAmount + 1
+        if (currentPrices == null) result[stock] = price
+        else result[stock] = currentPrices + price
+    }
+    for ((stock, amount) in count) {
+        result[stock] = result[stock]!!.div(amount)
+    }
+    return result
+}
 
 /**
  * Средняя (4 балла)
@@ -183,7 +217,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var result: String? = null
+    var minValue: Double = 2.0.pow(31) - 1
+    for ((name, description) in stuff) {
+        if (description.first == kind && description.second < minValue) {
+            minValue = description.second
+            result = name
+        }
+    }
+    return result
+}
 
 /**
  * Средняя (3 балла)
@@ -194,7 +238,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val newWord = word.lowercase()
+    for (char in newWord) {
+        if (char !in chars) return false
+    }
+    return true
+}
 
 /**
  * Средняя (4 балла)
@@ -208,7 +258,14 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (char in list) {
+        val currentLength = result[char]
+        if (currentLength == null) result[char] = 1 else result[char] = currentLength + 1
+    }
+    return result.filterValues { it != 1 }
+}
 
 /**
  * Средняя (3 балла)
@@ -277,7 +334,16 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val numbersAndIndexes = mutableMapOf<Int, Int>()
+    for (index in list.indices) {
+        val delta = number - list[index]
+        if (delta in numbersAndIndexes.keys) {
+            return numbersAndIndexes[delta]!! to index
+        } else numbersAndIndexes[list[index]] = index
+    }
+    return -1 to -1
+}
 
 /**
  * Очень сложная (8 баллов)
@@ -301,3 +367,35 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+   /* val result = mutableSetOf<String>()
+    val weights = mutableMapOf<String, Int>()
+    val prices = mutableMapOf<String, Int>()
+    for ((name, description) in treasures) {
+        val currentWeight = weights[name]
+        val currentPrice = prices[name]
+        if (currentWeight == null) weights[name] = description.first
+        if (currentPrice == null) prices[name] = description.second
+    }
+
+    var allWeights = mutableListOf<Int>()
+    for ((name, _) in weights) {
+        allWeights.add(weights[name]!!)
+    }
+    allWeights = allWeights.sorted() as MutableList<Int>
+
+    var weightSum = 0
+    for (weight in 0 until weights.size) {
+        weightSum += allWeights[weight]
+    }
+
+    var i = -1
+    allWeights = allWeights.reversed() as MutableList<Int>
+    while (weightSum >= capacity) {
+        i += 1
+        weightSum -= allWeights[i]
+        allWeights.removeAt(i)
+    }
+
+
+}
+*/
