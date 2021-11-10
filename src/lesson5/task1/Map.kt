@@ -189,12 +189,8 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     val result = mutableMapOf<String, Double>()
     val count = mutableMapOf<String, Int>()
     for ((stock, price) in stockPrices) {
-        val currentPrices = result[stock]
-        val currentAmount = count[stock]
-        if (currentAmount == null) count[stock] = 1
-        else count[stock] = currentAmount + 1
-        if (currentPrices == null) result[stock] = price
-        else result[stock] = currentPrices + price
+        count[stock] = count.getOrDefault(stock, 0) + 1
+        result[stock] = result.getOrDefault(stock, 0.0) + price
     }
     for ((stock, amount) in count) {
         result[stock] = result[stock]!!.div(amount)
@@ -219,11 +215,11 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var result: String? = null
-    var minValue: Double = 2.0.pow(31) - 1
+    var minValue = Double.MAX_VALUE
     for ((name, description) in stuff) {
         if (description.first == kind && description.second < minValue) {
-            minValue = description.second
             result = name
+            minValue = description.second
         }
     }
     return result
@@ -239,9 +235,10 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val charsToSet = chars.toSet()
     val newWord = word.lowercase()
     for (char in newWord) {
-        if (char !in chars) return false
+        if (!charsToSet.contains(char) && !charsToSet.contains(char.uppercaseChar())) return false
     }
     return true
 }
@@ -261,8 +258,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
     for (char in list) {
-        val currentLength = result[char]
-        if (currentLength == null) result[char] = 1 else result[char] = currentLength + 1
+        result[char] = result.getOrDefault(char, 0) + 1
     }
     return result.filterValues { it != 1 }
 }
