@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import java.lang.IllegalArgumentException
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -114,7 +116,17 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var containsNumbers = false
+    for (part in jumps) {
+        if (part.isDigit()) containsNumbers = true
+        if (!part.isDigit() && part != '-' && part != '%' && part != ' ') return -1
+    }
+    if (!containsNumbers) return -1
+    val allParts = jumps.split(" ")
+    val allJumps = allParts.filter { it[0].isDigit() }.map { it.toInt() }.sortedDescending()
+    return allJumps[0]
+}
 
 /**
  * Сложная (6 баллов)
@@ -138,7 +150,32 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val parts = expression.split(" ")
+    if (parts[0].contains('+') || parts[0].contains('-')) throw IllegalArgumentException()
+
+    var sum = parts[0].toInt()
+    for (i in 1 until parts.size step 2) {
+        if ((parts[i].contains('+') || parts[i].contains('-'))
+            && (parts[i + 1].contains('+') || parts[i + 1].contains('-'))
+            || isNumber(parts[i])
+        )
+            throw IllegalArgumentException()
+        else when {
+            parts[i].contains('+') -> sum += parts[i + 1].toInt()
+            parts[i].contains('-') -> sum -= parts[i + 1].toInt()
+        }
+    }
+    return sum
+}
+
+
+fun isNumber(str: String): Boolean {
+    for (char in str) {
+        if (!char.isDigit()) return false
+    }
+    return true
+}
 
 /**
  * Сложная (6 баллов)
@@ -150,6 +187,7 @@ fun plusMinus(expression: String): Int = TODO()
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int = TODO()
+
 
 /**
  * Сложная (6 баллов)
