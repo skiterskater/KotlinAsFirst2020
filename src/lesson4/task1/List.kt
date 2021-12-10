@@ -358,6 +358,7 @@ fun russian(n: Int): String {
     val hundreds = (n / 100) % 10
     val thousands = n / 1000
     var result = ""
+    println("$thousands $hundreds $dozens $n")
     if (dozens == 1) {
         result += secondDozen[n % 10]
     } else {
@@ -372,7 +373,7 @@ fun russian(n: Int): String {
             if (thousands % 10 == 1)
                 end = "тысяча"
             else {
-                if (thousands % 10 in 2..5)
+                if (thousands % 10 in 2..4)
                     end = "тысячи"
                 else end = "тысяч"
             }
