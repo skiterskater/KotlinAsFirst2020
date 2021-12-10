@@ -145,11 +145,11 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() /
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): List<Double> = if (list.isEmpty()) list else {
+fun center(list: MutableList<Double>): List<Double> {
     val k = mean(list)
     for (i in 0 until list.size)
         list[i] -= k
-    list
+    return list
 }
 
 
@@ -162,7 +162,7 @@ fun center(list: MutableList<Double>): List<Double> = if (list.isEmpty()) list e
  */
 fun times(a: List<Int>, b: List<Int>): Int = if (a.isEmpty()) 0 else {
     var c = 0
-    for (i in 0 until a.size)
+    for (i in a.indices)
         c += a[i] * b[i]
     c
 }
@@ -178,7 +178,7 @@ fun times(a: List<Int>, b: List<Int>): Int = if (a.isEmpty()) 0 else {
  */
 fun polynom(p: List<Int>, x: Int): Int = if (p.isEmpty()) 0 else {
     var c = 0
-    for (i in 0 until p.size) {
+    for (i in p.indices) {
         c += (p[i] * x.toDouble().pow(i.toDouble())).toInt()
     }
     c
@@ -213,7 +213,19 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO() // {
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var i = 2
+    var list = mutableListOf<Int>()
+    while (i <= n) {
+        if (n % i == 0)
+            list.add(i)
+        else {
+            if (i == 2) i++
+            else i += 2
+        }
+    }
+    return list
+}
 
 /**
  * Сложная (4 балла)
@@ -253,7 +265,13 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var s = 0
+    for (i in digits.indices) {
+        s += digits[i] * base.toDouble().pow((digits.size - 1 - i).toDouble()).toInt()
+    }
+    return s
+}
 
 /**
  * Сложная (4 балла)
@@ -277,7 +295,19 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    val romeNumbers = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val arabNumbers = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    var k = n
+    var s = ""
+    for (i in arabNumbers.indices) {
+        while (k / arabNumbers[i] > 0) {
+            s += romeNumbers[i]
+            k -= arabNumbers[i]
+        }
+    }
+    return s
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -286,4 +316,70 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val firstDozen = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val secondDozen = listOf(
+        "десять",
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "четырнадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семнадцать",
+        "восемнадцать",
+        "девятнадцать"
+    )
+    val dozen = listOf(
+        "",
+        "",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
+    )
+    val hundred = listOf(
+        "",
+        "сто",
+        "двести",
+        "триста",
+        "четыреста",
+        "пятьсот",
+        "шестьсот",
+        "семьсот",
+        "восемьсот",
+        "девятьсот"
+    )
+    val dozens = (n / 10) % 10
+    val hundreds = (n / 100) % 10
+    val thousands = n / 1000
+    var result = ""
+    if (dozens == 1) {
+        result += secondDozen[n % 10]
+    } else {
+        result = dozen[dozens] + " " + firstDozen[n % 10]
+    }
+    result = hundred[hundreds] + " " + result
+    if (thousands > 0) {
+        var end = ""
+        if (thousands % 100 in 11..19) {
+            end = "тысяч"
+        } else {
+            if (thousands % 10 == 1)
+                end = "тысяча"
+            else {
+                if (thousands % 10 in 2..5)
+                    end = "тысячи"
+                else end = "тысяч"
+            }
+        }
+        result = (russian(thousands) + " " + end + " ").replace("один ", "одна ").replace("два ", "две ") + result
+        // replace("один ", "одна ").replace("два ", "две ") нужно для правильной формы слова - 101101 (сто ОДНА тысяча сто ОДИН)
+    }
+    return result.replace("\\s+".toRegex(), " ").trim()
+    // replace("\\s+".toRegex() убирает двойные пробелы
+}
