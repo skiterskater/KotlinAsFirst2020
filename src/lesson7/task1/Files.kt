@@ -317,9 +317,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val lines = textWithTags.split("\n").toMutableList()
     for (idx in lines.indices) {
         val singleLine = lines[idx]
-        if (singleLine.trim().isBlank()) {
+        if (singleLine.trim().isEmpty()) {
             if (linesCheckedInParagraph >= 1) {
-                if (idx < lines.size - 1 && lines[idx + 1].trim().isNotBlank()) {
+                if (idx + 1 < lines.size && lines[idx + 1].trim().isNotEmpty()) {
                     lines[idx] = "</p><p>"
                     linesCheckedInParagraph = 0
                 }
