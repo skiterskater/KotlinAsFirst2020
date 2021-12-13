@@ -4,8 +4,6 @@ package lesson7.task1
 
 import java.io.File
 
-import kotlin.math.max
-
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
 // Максимальное количество баллов = 55
@@ -301,104 +299,39 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    val lines = File(inputName).readLines()
+    val startText = File(inputName).readText()
     val toReturn = File(outputName).bufferedWriter()
-    val result = StringBuilder("<html><body>")
-    val currentStack = mutableListOf<String>()
 
-    // убираем табуляцию и пробелы
-    for (line in lines) {
-        line.replace("\t", "")
-        line.replace(" ", "")
+    val replaceBold = Regex("\\*\\*([\\s\\S]*?)\\*\\*").replace(startText) { char ->
+        "<b>" + char.value.replace("**", "") + "</b>"
+    }
+    val replaceItalics = Regex("\\*([\\s\\S]*?)\\*").replace(replaceBold) { char ->
+        "<i>" + char.value.replace("*", "") + "</i>"
+    }
+    val replaceStrikethrough = Regex("~~([\\s\\S]*?)~~").replace(replaceItalics) { char ->
+        "<s>" + char.value.replace("~~", "") + "</s>"
     }
 
-
-    var paragraphCreated = false
-
-    lines.forEachIndexed { idx, current ->
-        if (idx == 0 && lines[idx] != "") {
-            result.append("<p>")
-            paragraphCreated = true
-        }
-
-        if (idx >= 1) {
-            if (current != "" && !paragraphCreated) {
-                result.append("<p>")
-                paragraphCreated = true
-            }
-            if (current == "" && paragraphCreated) {
-                result.append("</p>")
-                paragraphCreated = false
-            }
-        }
-
-        var i = 0
-        while (i < current.length) {
-            when (current[i]) {
-                '*' -> {
-                    if (current[i + 1] == '*' && i < current.length - 1) {
-                        if (current[i + 2] == '*' && i < current.length - 2) {
-                            i += 3
-                            if ("*" !in currentStack && "**" !in currentStack) {
-                                currentStack.add("**")
-                                currentStack.add("*")
-                                result.append("<b><i>")
-                            } else {
-                                if (currentStack.indexOf("**") > currentStack.indexOf("*")) {
-                                    result.append("</b></i>")
-                                } else result.append("</i></b>")
-                                currentStack.remove("**")
-                                currentStack.remove("*")
-                            }
-                        } else {
-                            i += 2
-                            if ("**" !in currentStack) {
-                                currentStack.add("**")
-                                result.append("<b>")
-                            } else {
-                                currentStack.remove("**")
-                                result.append("</b>")
-                            }
-                        }
-                    } else {
-                        i += 1
-                        if ("*" !in currentStack) {
-                            currentStack.add("*")
-                            result.append("<i>")
-                        } else {
-                            currentStack.remove("*")
-                            result.append("</i>")
-                        }
-                    }
-                }
-                '~' -> {
-                    if (current[i + 1] == '~' && i < current.length - 1) {
-                        i += 2
-                        if ("~~" !in currentStack) {
-                            currentStack.add("~~")
-                            result.append("<s>")
-                        } else {
-                            currentStack.remove("~~")
-                            result.append("</s>")
-                        }
-                    }
-                }
-                else -> {
-                    result.append(current[i])
-                    i += 1
+    val textWithTags = replaceStrikethrough
+    var linesCheckedInParagraph = 0
+    val lines = textWithTags.split("\n").toMutableList()
+    for (idx in lines.indices) {
+        val singleLine = lines[idx]
+        if (singleLine.trim().isBlank()) {
+            if (linesCheckedInParagraph >= 1) {
+                if (idx < lines.size - 1 && lines[idx + 1].trim().isNotBlank()) {
+                    lines[idx] = "</p><p>"
+                    linesCheckedInParagraph = 0
                 }
             }
+        } else {
+            linesCheckedInParagraph += 1
         }
     }
 
-    if (paragraphCreated) result.append("</p>")
-
-    result.append("</body></html>")
-    toReturn.write("$result")
+    toReturn.write("<html><body><p>${lines.joinToString(separator = "")}</p></body></html>")
     toReturn.close()
 }
-
-
 
 
 /**
