@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+
 import kotlin.math.max
 
 // Урок 7: работа с файлами
@@ -300,8 +301,105 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val lines = File(inputName).readLines()
+    val toReturn = File(outputName).bufferedWriter()
+    val result = StringBuilder("<html><body>")
+    val currentStack = mutableListOf<String>()
+
+    // убираем табуляцию и пробелы
+    for (line in lines) {
+        line.replace("\t", "")
+        line.replace(" ", "")
+    }
+
+
+    var paragraphCreated = false
+
+    lines.forEachIndexed { idx, current ->
+        if (idx == 0 && lines[idx] != "") {
+            result.append("<p>")
+            paragraphCreated = true
+        }
+
+        if (idx >= 1) {
+            if (current != "" && !paragraphCreated) {
+                result.append("<p>")
+                paragraphCreated = true
+            }
+            if (current == "" && paragraphCreated) {
+                result.append("</p>")
+                paragraphCreated = false
+            }
+        }
+
+        var i = 0
+        while (i < current.length) {
+            when (current[i]) {
+                '*' -> {
+                    if (current[i + 1] == '*' && i < current.length - 1) {
+                        if (current[i + 2] == '*' && i < current.length - 2) {
+                            i += 3
+                            if ("*" !in currentStack && "**" !in currentStack) {
+                                currentStack.add("**")
+                                currentStack.add("*")
+                                result.append("<b><i>")
+                            } else {
+                                if (currentStack.indexOf("**") > currentStack.indexOf("*")) {
+                                    result.append("</b></i>")
+                                } else result.append("</i></b>")
+                                currentStack.remove("**")
+                                currentStack.remove("*")
+                            }
+                        } else {
+                            i += 2
+                            if ("**" !in currentStack) {
+                                currentStack.add("**")
+                                result.append("<b>")
+                            } else {
+                                currentStack.remove("**")
+                                result.append("</b>")
+                            }
+                        }
+                    } else {
+                        i += 1
+                        if ("*" !in currentStack) {
+                            currentStack.add("*")
+                            result.append("<i>")
+                        } else {
+                            currentStack.remove("*")
+                            result.append("</i>")
+                        }
+                    }
+                }
+                '~' -> {
+                    if (current[i + 1] == '~' && i < current.length - 1) {
+                        i += 2
+                        if ("~~" !in currentStack) {
+                            currentStack.add("~~")
+                            result.append("<s>")
+                        } else {
+                            currentStack.remove("~~")
+                            result.append("</s>")
+                        }
+                    }
+                }
+                else -> {
+                    result.append(current[i])
+                    i += 1
+                }
+            }
+        }
+    }
+
+    if (paragraphCreated) result.append("</p>")
+
+    result.append("</body></html>")
+    toReturn.write("$result")
+    toReturn.close()
 }
+
+
+
 
 /**
  * Сложная (23 балла)
@@ -469,4 +567,3 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
 }
-

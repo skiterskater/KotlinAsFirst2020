@@ -116,16 +116,9 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
+
 fun bestLongJump(jumps: String): Int {
-    var containsNumbers = false
-    for (part in jumps) {
-        if (part.isDigit()) containsNumbers = true
-        if (!part.isDigit() && part != '-' && part != '%' && part != ' ') return -1
-    }
-    if (!containsNumbers) return -1
-    val allParts = jumps.split(" ")
-    val allJumps = allParts.filter { it[0].isDigit() }.map { it.toInt() }.sortedDescending()
-    return allJumps[0]
+    TODO()
 }
 
 /**
@@ -186,7 +179,30 @@ fun isNumber(str: String): Boolean {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var result = -1
+    val strToLowercase = str.lowercase()
+    val words = strToLowercase.split(" ")
+    if (words.distinct().size == words.size) return -1
+
+
+    var wordIndex = 0
+    var lastWordLength = 0
+    for (idx in 0 until words.size - 1) {
+        if (words[idx] != words[idx + 1]) continue
+        else {
+            wordIndex = idx
+            lastWordLength = words[idx].length
+        }
+    }
+
+    for (idx in 0 until wordIndex + 1) {
+        result += words[idx].length + 1
+    }
+
+    result -= lastWordLength - 1 + 1
+    return result
+}
 
 
 /**
