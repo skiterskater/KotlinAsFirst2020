@@ -207,7 +207,16 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    if (jumps.isEmpty() || !jumps.contains(Regex("""[+%\-\d\s]"""))) return -1
+    val results =
+        jumps.split(Regex(" ")) // получим список вида [результат, символы, результат, символы и тд.] чередование!
+    var max = -1
+    for (i in results.indices step 2) {
+        if (results[i + 1] == "+" && results[i].toInt() > max) max = results[i].toInt()
+    }
+    return max
+}
 
 /**
  * Сложная (6 баллов)
