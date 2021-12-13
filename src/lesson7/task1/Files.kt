@@ -2,7 +2,9 @@
 
 package lesson7.task1
 
+import ru.spbstu.wheels.stack
 import java.io.File
+import java.lang.IllegalArgumentException
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -432,8 +434,55 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlLists(inputName: String, outputName: String) {
-    TODO()
+    val lines = File(inputName).readLines()
+    val toReturn = File(outputName).bufferedWriter()
+    val builder = StringBuilder("<html><body><p>")
+
+    val digits = ".0123456789"
+    val currentStack = mutableListOf<String>()
+
+// Для первой строчки
+    var idx = 0
+    if (lines.isNotEmpty()) {
+        if (lines[0][idx] == '*') {
+            currentStack.add("ul")
+        } else currentStack.add("ol")
+
+        while (lines[0][idx] == ' ' || lines[0][idx] == '*' || lines[0][idx] in digits) idx += 1
+        builder.append("<${currentStack.last()}><li>${lines[0].substring(idx)}")
+
+// для последующих строчек
+        for (j in 1 until lines.size) {
+            val currentLine = lines[j]
+            if (currentLine.trim().isEmpty()) continue
+            var c = 0
+            while (currentLine[c] == ' ') c += 1
+            if (c > 4 * (currentStack.size - 1)) {
+                if (currentLine[c] in digits) {
+                    builder.append("<ol>")
+                    currentStack.add("ol")
+                } else if (currentLine[c] == '*') {
+                    builder.append("<ul>")
+                    currentStack.add("ul")
+                } else throw IllegalArgumentException()
+            } else if (c < 4 * (currentStack.size - 1)) {
+                builder.append("</li></${currentStack.removeLast()}></li>")
+            } else {
+                builder.append("</li>")
+            }
+
+            while (currentLine[c] == ' ' || currentLine[c] == '*' || currentLine[c] == '.' || currentLine[c] in digits) c += 1
+            builder.append("<li>${currentLine.substring(c)}")
+        }
+
+        while (currentStack.size > 0) builder.append("</li></${currentStack.removeLast()}>")
+    }
+
+    builder.append("</p></body></html>")
+    toReturn.write("$builder")
+    toReturn.close()
 }
+
 
 /**
  * Очень сложная (30 баллов)
