@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import java.lang.IllegalArgumentException
+import java.lang.NumberFormatException
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -118,7 +119,17 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  */
 
 fun bestLongJump(jumps: String): Int {
-    TODO()
+    var bestJump = -1
+    val allJumps = jumps.split(" ")
+    for (jump in allJumps) {
+        if (jump == "-" || jump == "%") continue
+        try {
+            bestJump = maxOf(jump.toInt(), bestJump)
+        } catch (e: NumberFormatException) {
+            return -1
+        }
+    }
+    return bestJump
 }
 
 /**
@@ -179,30 +190,7 @@ fun isNumber(str: String): Boolean {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int {
-    var result = -1
-    val strToLowercase = str.lowercase()
-    val words = strToLowercase.split(" ")
-    if (words.distinct().size == words.size) return -1
-
-
-    var wordIndex = 0
-    var lastWordLength = 0
-    for (idx in 0 until words.size - 1) {
-        if (words[idx] != words[idx + 1]) continue
-        else {
-            wordIndex = idx
-            lastWordLength = words[idx].length
-        }
-    }
-
-    for (idx in 0 until wordIndex + 1) {
-        result += words[idx].length + 1
-    }
-
-    result -= lastWordLength - 1 + 1
-    return result
-}
+fun firstDuplicateIndex(str: String): Int = TODO()
 
 
 /**
