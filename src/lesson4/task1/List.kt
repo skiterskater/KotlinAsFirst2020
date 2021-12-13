@@ -299,7 +299,7 @@ fun roman(n: Int): String {
     val romeNumbers = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     val arabNumbers = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var k = n
-    var s = ""
+    var s = buildString {}
     for (i in arabNumbers.indices) {
         while (k / arabNumbers[i] > 0) {
             s += romeNumbers[i]
@@ -358,7 +358,6 @@ fun russian(n: Int): String {
     val hundreds = (n / 100) % 10
     val thousands = n / 1000
     var result = ""
-    println("$thousands $hundreds $dozens $n")
     if (dozens == 1) {
         result += secondDozen[n % 10]
     } else {

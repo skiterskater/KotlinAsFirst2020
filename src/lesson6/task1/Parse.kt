@@ -2,6 +2,11 @@
 
 package lesson6.task1
 
+import lesson1.task1.accountInThreeYears
+import lesson2.task2.daysInMonth
+import java.util.*
+import kotlin.math.*
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +79,36 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    val year: Int
+    val month: Int
+    val day: Int
+    if (parts.size != 3) return ""
+    try {
+        day = parts[0].toInt()
+        year = parts[2].toInt()
+        month = when (parts[1].lowercase()) {
+            "января" -> 1
+            "февраля" -> 2
+            "марта" -> 3
+            "апреля" -> 4
+            "мая" -> 5
+            "июня" -> 6
+            "июля" -> 7
+            "августа" -> 8
+            "сентября" -> 9
+            "октября" -> 10
+            "ноября" -> 11
+            "декабря" -> 12
+            else -> throw NumberFormatException("Incorrect month")
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    if (day > daysInMonth(month, year) || day < 1) return ""
+    return "%02d.%02d.%d".format(day, month, year)
+}
 
 /**
  * Средняя (4 балла)
@@ -86,7 +120,38 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.trim().split(".")
+    val year: Int
+    val month: Int
+    val day: Int
+    if (parts.size != 3) return ""
+    val months = listOf(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    try {
+        day = parts[0].toInt()
+        month = parts[1].toInt()
+        year = parts[2].toInt()
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    if (day > daysInMonth(month, year) || day < 1) return ""
+    if (month < 1 || month > 12) return ""
+    if (year < 0) return ""
+    return "%d %s %d".format(day, months[month - 1], year)
+}
 
 /**
  * Средняя (4 балла)
@@ -102,7 +167,9 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String =
+    if (!Regex("""(\+?\s*\d[-\s\d]*(\([-\s\d]+\)[-\s\d]+)?)""").matches(phone)) ""
+    else phone.filter { it !in "() -" }
 
 /**
  * Средняя (5 баллов)
@@ -114,7 +181,20 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var max = -1
+    val results = jumps.split(Regex("""\s+"""))
+    val delete = listOf("-", "%")
+    for (result in results) {
+        if (result in delete) continue
+        try {
+            max = max(max, result.toInt())
+        } catch (e: NumberFormatException) {
+            return -1
+        }
+    }
+    return max
+}
 
 /**
  * Сложная (6 баллов)
@@ -138,7 +218,20 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val sum = expression.split(" ")
+    if (!Regex("""\d+""").matches(sum[0])) throw IllegalArgumentException()
+    if (sum.size % 2 != 1) throw IllegalArgumentException()
+    var result = sum[0].toInt()
+    for (i in 1 until sum.size step 2) {
+        if (!Regex("""\d+""").matches(sum[i + 1])) throw IllegalArgumentException()
+        when (sum[i]) {
+            "-" -> result -= sum[i + 1].toInt()
+            "+" -> result += sum[i + 1].toInt()
+        }
+    }
+    return result
+}
 
 /**
  * Сложная (6 баллов)
