@@ -299,14 +299,14 @@ fun roman(n: Int): String {
     val romeNumbers = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     val arabNumbers = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var k = n
-    var s = buildString {}
+    var s = StringBuilder()
     for (i in arabNumbers.indices) {
         while (k / arabNumbers[i] > 0) {
-            s += romeNumbers[i]
+            s.append(romeNumbers[i])
             k -= arabNumbers[i]
         }
     }
-    return s
+    return s.toString()
 }
 
 /**
@@ -316,54 +316,55 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
+val firstDozen = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+val secondDozen = listOf(
+    "десять",
+    "одиннадцать",
+    "двенадцать",
+    "тринадцать",
+    "четырнадцать",
+    "пятнадцать",
+    "шестнадцать",
+    "семнадцать",
+    "восемнадцать",
+    "девятнадцать"
+)
+val dozen = listOf(
+    "",
+    "",
+    "двадцать",
+    "тридцать",
+    "сорок",
+    "пятьдесят",
+    "шестьдесят",
+    "семьдесят",
+    "восемьдесят",
+    "девяносто"
+)
+val hundred = listOf(
+    "",
+    "сто",
+    "двести",
+    "триста",
+    "четыреста",
+    "пятьсот",
+    "шестьсот",
+    "семьсот",
+    "восемьсот",
+    "девятьсот"
+)
+
 fun russian(n: Int): String {
-    val firstDozen = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    val secondDozen = listOf(
-        "десять",
-        "одиннадцать",
-        "двенадцать",
-        "тринадцать",
-        "четырнадцать",
-        "пятнадцать",
-        "шестнадцать",
-        "семнадцать",
-        "восемнадцать",
-        "девятнадцать"
-    )
-    val dozen = listOf(
-        "",
-        "",
-        "двадцать",
-        "тридцать",
-        "сорок",
-        "пятьдесят",
-        "шестьдесят",
-        "семьдесят",
-        "восемьдесят",
-        "девяносто"
-    )
-    val hundred = listOf(
-        "",
-        "сто",
-        "двести",
-        "триста",
-        "четыреста",
-        "пятьсот",
-        "шестьсот",
-        "семьсот",
-        "восемьсот",
-        "девятьсот"
-    )
     val dozens = (n / 10) % 10
     val hundreds = (n / 100) % 10
     val thousands = n / 1000
-    var result = ""
+    var result = StringBuilder()
     if (dozens == 1) {
-        result += secondDozen[n % 10]
+        result.append(secondDozen[n % 10])
     } else {
-        result = dozen[dozens] + " " + firstDozen[n % 10]
+        result = StringBuilder(dozen[dozens] + " " + firstDozen[n % 10])
     }
-    result = hundred[hundreds] + " " + result
+    result = StringBuilder(hundred[hundreds] + " " + result)
     if (thousands > 0) {
         var end = ""
         if (thousands % 100 in 11..19) {
@@ -377,7 +378,9 @@ fun russian(n: Int): String {
                 else end = "тысяч"
             }
         }
-        result = (russian(thousands) + " " + end + " ").replace("один ", "одна ").replace("два ", "две ") + result
+        result = StringBuilder(
+            (russian(thousands) + " " + end + " ").replace("один ", "одна ").replace("два ", "две ") + result
+        )
         // replace("один ", "одна ").replace("два ", "две ") нужно для правильной формы слова - 101101 (сто ОДНА тысяча сто ОДИН)
     }
     return result.replace("\\s+".toRegex(), " ").trim()

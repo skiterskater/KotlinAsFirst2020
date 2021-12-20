@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.util.*
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -79,9 +80,25 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
-
-
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val text = File(inputName).readText().lowercase()
+    var res = mutableMapOf<String, Int>()
+    for (substring in substrings)
+        res[substring] = countSubstringsWithCross(text, substring.lowercase())
+    return res
+}
+//функция считающая вхождение строк с пересечением(если начало i-ой строки содержится к конце (i-1)-ой строки
+fun countSubstringsWithCross(text: String, substring: String): Int {
+    return if (text.contains(substring)) {
+        var count = 0
+        var i = text.indexOf(substring)
+        while (i != -1) {
+            i = text.indexOf(substring, i + 1)
+            count += 1
+        }
+        count
+    } else 0
+}
 /**
  * Средняя (12 баллов)
  *
@@ -230,8 +247,24 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+    val dictionaryLow = dictionary.map { it.key.lowercaseChar() to it.value.lowercase() }.toMap()
+    val writer = File(outputName).writer()
+    val lines = File(inputName).readLines()
+    for (line in lines) {
+        var newLine = buildString { }
+        for (i in line.indices) {
+            newLine += if (line[i].lowercaseChar() in dictionaryLow.keys) dictionaryLow[line[i].lowercaseChar()]
+            else line[i].lowercase()
+            if (line == lines[0])
+                newLine =
+                    newLine.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+            // строчка выше получилась из newLine.capitalize
+        }
+        writer.write("$newLine\n")
+    }
+    writer.close()
 }
+
 
 /**
  * Средняя (12 баллов)

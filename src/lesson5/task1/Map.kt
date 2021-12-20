@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+
 import lesson4.task1.mean
 
 // Урок 5: ассоциативные массивы и множества
@@ -175,7 +176,8 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> =
-    stockPrices.groupBy({ it.first }, { it.second }).mapValues { mean(it.value) } // groupBy группирует по ключу
+    TODO()
+
 /**
  * Средняя (4 балла)
  *
@@ -191,7 +193,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var min = Double.MAX_VALUE
+    var minName = buildString { }
+    for ((nameProduct, kindPrice) in stuff) {
+        if (kindPrice.first == kind && kindPrice.second < min) {
+            min = kindPrice.second
+            minName = nameProduct
+        }
+    }
+    return minName.ifEmpty { null }
+}
 
 /**
  * Средняя (3 балла)
@@ -202,7 +214,16 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    var res = true
+    for (i in word.indices) {
+        if (word[i].lowercaseChar() !in chars) {
+            res = false
+            break
+        }
+    }
+    return res
+}
 
 /**
  * Средняя (4 балла)
@@ -287,12 +308,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    val num = mutableMapOf<Int, Int>()
-    for ((i, k) in list.withIndex()) {
-        if (k in num) return Pair(num[k]!!, i)
-        num[number - k] = i
-    }
-    return Pair(-1, -1)
+    TODO()
 }
 
 /**

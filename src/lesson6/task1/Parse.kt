@@ -4,6 +4,7 @@ package lesson6.task1
 
 import lesson1.task1.accountInThreeYears
 import lesson2.task2.daysInMonth
+import ru.spbstu.wheels.product
 import java.util.*
 import kotlin.math.*
 
@@ -264,7 +265,21 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    println(" $description;")
+    // if (description.isEmpty() || !((" $description").matches(Regex("""(\s[а-яА-Я]+\s\d+\.\d;)+""")))) return ""
+    val product = description.replace(";", "").split(" ")
+    // переводим нашу строку в список вида: [название товара, цена, название товара, цена и тд.]
+    var max = -1.0
+    var maxName = ""
+    for (i in product.indices step 2) {
+        if (product[i + 1].toDouble() > max) {
+            max = product[i + 1].toDouble()
+            maxName = product[i]
+        }
+    }
+    return maxName
+}
 
 /**
  * Сложная (6 баллов)
@@ -277,7 +292,15 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    val digits = mutableMapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
+    var res = digits[roman[roman.length - 1]]
+    for (i in roman.length - 2 downTo 0) {
+        res =
+            if (digits[roman[i + 1]]!! > digits[roman[i]]!!) res!! - digits[roman[i]]!! else res!! + digits[roman[i]]!!
+    }
+    return res ?: -1 //if (res == null) return -1 else return res
+}
 
 /**
  * Очень сложная (7 баллов)
