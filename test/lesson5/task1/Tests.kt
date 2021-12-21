@@ -341,5 +341,10 @@ class Tests {
                 450
             )
         )
+        assertEquals(setOf("Шоколад", "Конфеты"),
+            lesson5.task1.bagPacking(
+                mapOf("Шоколад" to (10 to 20), "Конфеты" to (5 to 30)),
+                15)
+        )
     }
 }
