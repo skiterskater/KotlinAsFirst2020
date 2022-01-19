@@ -253,12 +253,15 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     for (line in lines) {
         var newLine = buildString { }
         for (i in line.indices) {
-            newLine += if (line[i].lowercaseChar() in dictionaryLow.keys) dictionaryLow[line[i].lowercaseChar()]
-            else line[i].lowercase()
-            if (line == lines[0] && line.first() == line.first().uppercaseChar())
-                newLine =
-                    newLine.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-            // строчка выше получилась из newLine.capitalize
+            newLine += if (line[i].lowercaseChar() in dictionaryLow.keys && line[i].isLowerCase()) dictionaryLow[line[i].lowercaseChar()]
+            else if (line[i].lowercaseChar() in dictionaryLow.keys && line[i].isUpperCase()) dictionaryLow[line[i].lowercaseChar()]?.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+                // строчка выше получилась из newLine.capitalize
+            }
+            else if (line[i] in dictionary.keys) dictionary[line[i]]
+            else line[i]
         }
         writer.write("$newLine\n")
     }
