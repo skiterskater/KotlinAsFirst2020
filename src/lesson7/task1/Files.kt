@@ -255,7 +255,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
         for (i in line.indices) {
             newLine += if (line[i].lowercaseChar() in dictionaryLow.keys) dictionaryLow[line[i].lowercaseChar()]
             else line[i].lowercase()
-            if (line == lines[0] && line.first() == line.first().uppercaseChar())
+            if (line == lines[0] && (line.length != 1 || line.first() == line.first().uppercaseChar()))
                 newLine =
                     newLine.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
             // строчка выше получилась из newLine.capitalize
