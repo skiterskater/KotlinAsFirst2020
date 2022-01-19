@@ -202,7 +202,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             minName = nameProduct
         }
     }
-    return minName.ifEmpty { null }
+    return if (kind != "" && minName.isEmpty()) null else minName
 }
 
 /**
@@ -217,7 +217,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     var res = true
     for (i in word.indices) {
-        if (word[i].lowercaseChar() !in chars) {
+        if (word[i].lowercaseChar() !in chars && word[i].uppercaseChar() !in chars) {
             res = false
             break
         }
