@@ -294,10 +294,10 @@ fun mostExpensive(description: String): String {
  */
 fun fromRoman(roman: String): Int {
     val digits = mutableMapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
-    var res = digits[roman[roman.length - 1]]
+    var res = digits[roman[roman.length - 1]]!!
     for (i in roman.length - 2 downTo 0) {
         res =
-            if (digits[roman[i + 1]]!! > digits[roman[i]]!!) res!! - digits[roman[i]]!! else res!! + digits[roman[i]]!!
+            if (digits[roman[i + 1]]!! > digits[roman[i]]!!) res - digits[roman[i]]!! else res + digits[roman[i]]!!
     }
     return res ?: -1 //if (res == null) return -1 else return res
 }
