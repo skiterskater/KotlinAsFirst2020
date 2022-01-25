@@ -272,7 +272,7 @@ fun mostExpensive(description: String): String {
         val product = description.replace(";", "").split(" ")
         println(product)
         // переводим нашу строку в список вида: [название товара, цена, название товара, цена и тд.]
-        var max = 0.0
+        var max = -1.0
         var maxName = ""
         for (i in product.indices step 2) {
             if (product[i + 1].toDouble() > max) {
