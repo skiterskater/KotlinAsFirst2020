@@ -499,9 +499,11 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
         }${(rhv % 10) * lhv}\n"
     )
     var second = rhv / 10
+    var countT = 2 // учитывает знак + и переход
     while (second != 0) {
-        writer.write("+${newString(digitNumber(second) - 1, ' ')}${(second % 10) * lhv}\n")
+        writer.write("+${newString(count - digitNumber((second % 10) * lhv) - countT, ' ')}${(second % 10) * lhv}\n")
         second /= 10
+        countT++
     }
     writer.write("${newString(count, '-')}\n${newString(count - digitNumber(lhv * rhv), ' ')}${lhv * rhv}")
     writer.close()
