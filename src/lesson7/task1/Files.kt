@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import lesson3.task1.digitNumber
 import java.io.File
 import java.util.*
 
@@ -87,6 +88,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         res[substring] = countSubstringsWithCross(text, substring.lowercase())
     return res
 }
+
 //функция считающая вхождение строк с пересечением(если начало i-ой строки содержится к конце (i-1)-ой строки
 fun countSubstringsWithCross(text: String, substring: String): Int {
     return if (text.contains(substring)) {
@@ -99,6 +101,7 @@ fun countSubstringsWithCross(text: String, substring: String): Int {
         count
     } else 0
 }
+
 /**
  * Средняя (12 баллов)
  *
@@ -484,7 +487,34 @@ fun markdownToHtml(inputName: String, outputName: String) {
  *
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val writer = File(outputName).writer()
+    writer.write("${newString(digitNumber(rhv), ' ')}$lhv\n*${newString(digitNumber(lhv) - 1, ' ')}$rhv\n")
+    val count = digitNumber(lhv) + digitNumber(rhv)
+    writer.write(
+        "${newString(count, '-')}\n${
+            newString(
+                count - digitNumber((rhv % 10) * lhv),
+                ' '
+            )
+        }${(rhv % 10) * lhv}\n"
+    )
+    var second = rhv / 10
+    while (second != 0) {
+        writer.write("+${newString(digitNumber(second) - 1, ' ')}${(second % 10) * lhv}\n")
+        second /= 10
+    }
+    writer.write("${newString(count, '-')}\n${newString(count - digitNumber(lhv * rhv), ' ')}${lhv * rhv}")
+    writer.close()
+}
+// функция делающая строку из n одинаковых символов
+fun newString(n: Int, symbol: Char): String {
+    var newLine = ""
+    var count = n
+    while (count > 0) {
+        newLine += symbol
+        count--
+    }
+    return newLine
 }
 
 

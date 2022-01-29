@@ -3,10 +3,6 @@
 package lesson5.task1
 
 
-import lesson4.task1.mean
-import java.lang.NullPointerException
-import java.lang.StringBuilder
-
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -239,7 +235,13 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    var res = mutableMapOf<String, Int>()
+    for (element in list) {
+        if (res[element] == null) res[element] = 1 else res[element] = res[element]!! + 1
+    }
+    return res.filter { it.value > 1 }
+}
 
 /**
  * Средняя (3 балла)
@@ -335,5 +337,14 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    TODO()
+    var sum = 0
+    var res = mutableSetOf<String>()
+    var balance = capacity
+    for ((treasure, cost) in treasures) {
+        if (balance - cost.first > 0) {
+            sum += cost.second
+            res.add(treasure)
+        } else break
+    }
+    return res
 }
