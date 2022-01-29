@@ -489,16 +489,9 @@ fun markdownToHtml(inputName: String, outputName: String) {
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).writer()
-    writer.write("${newString(digitNumber(rhv), ' ')}$lhv\n*${newString(digitNumber(lhv) - 1, ' ')}$rhv\n")
     val count = max(digitNumber(lhv) + digitNumber(rhv), digitNumber(rhv * lhv))
-    writer.write(
-        "${newString(count, '-')}\n${
-            newString(
-                count - digitNumber((rhv % 10) * lhv),
-                ' '
-            )
-        }${(rhv % 10) * lhv}\n"
-    )
+    writer.write("${newString(digitNumber(rhv), ' ')}$lhv\n*${newString(count - digitNumber(rhv) - 1, ' ')}$rhv\n")
+    writer.write("${newString(count, '-')}\n${newString(count - digitNumber((rhv % 10) * lhv), ' ')}${(rhv % 10) * lhv}\n")
     var second = rhv / 10
     var countT = 2 // учитывает знак + и переход
     while (second != 0) {
