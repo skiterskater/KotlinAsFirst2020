@@ -489,7 +489,7 @@ fun markdownToHtml(inputName: String, outputName: String) {
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).writer()
-    val count = max(digitNumber(lhv) + digitNumber(rhv), digitNumber(rhv * lhv))
+    val count = max(digitNumber(lhv) + digitNumber(rhv), digitNumber(rhv * lhv) + 1)
     writer.write("${newString(digitNumber(rhv), ' ')}$lhv\n*${newString(count - digitNumber(rhv) - 1, ' ')}$rhv\n")
     writer.write("${newString(count, '-')}\n${newString(count - digitNumber((rhv % 10) * lhv), ' ')}${(rhv % 10) * lhv}\n")
     var second = rhv / 10
