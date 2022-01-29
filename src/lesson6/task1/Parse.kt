@@ -295,8 +295,8 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
+val digits = mutableMapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
 fun fromRoman(roman: String): Int {
-    val digits = mutableMapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
     return if (roman.contains(Regex("""[IVXLCDM]"""))) {
         try {
             var res = digits[roman[roman.length - 1]]!!

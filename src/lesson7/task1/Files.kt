@@ -260,7 +260,6 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 ) else it.toString()
                 // строчка выше получилась из newLine.capitalize
             }
-            else if (line[i] in dictionary.keys) dictionary[line[i]]
             else line[i]
         }
         writer.write("$newLine\n")

@@ -5,6 +5,7 @@ package lesson5.task1
 
 import lesson4.task1.mean
 import java.lang.NullPointerException
+import java.lang.StringBuilder
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -196,7 +197,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var min = Double.MAX_VALUE
-    var minName = buildString { }
+    var minName = ""
     for ((nameProduct, kindPrice) in stuff) {
         if (kindPrice.first == kind && kindPrice.second < min) {
             min = kindPrice.second
