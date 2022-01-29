@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import lesson3.task1.digitNumber
+import kotlin.math.*
 import java.io.File
 import java.util.*
 
@@ -489,7 +490,7 @@ fun markdownToHtml(inputName: String, outputName: String) {
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).writer()
     writer.write("${newString(digitNumber(rhv), ' ')}$lhv\n*${newString(digitNumber(lhv) - 1, ' ')}$rhv\n")
-    val count = digitNumber(lhv) + digitNumber(rhv)
+    val count = max(digitNumber(lhv) + digitNumber(rhv), digitNumber(rhv * lhv))
     writer.write(
         "${newString(count, '-')}\n${
             newString(
