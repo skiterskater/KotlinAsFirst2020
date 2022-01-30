@@ -84,7 +84,7 @@ fun deleteMarked(inputName: String, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val text = File(inputName).readText().lowercase()
-    var res = mutableMapOf<String, Int>()
+    val res = mutableMapOf<String, Int>()
     for (substring in substrings)
         res[substring] = countSubstringsWithCross(text, substring.lowercase())
     return res
@@ -490,8 +490,22 @@ fun markdownToHtml(inputName: String, outputName: String) {
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).writer()
     val count = max(digitNumber(lhv) + digitNumber(rhv), digitNumber(rhv * lhv) + 1)
-    writer.write("${newString(digitNumber(rhv), ' ')}$lhv\n*${newString(count - digitNumber(rhv) - 1, ' ')}$rhv\n")
-    writer.write("${newString(count, '-')}\n${newString(count - digitNumber((rhv % 10) * lhv), ' ')}${(rhv % 10) * lhv}\n")
+    writer.write(
+        "${newString(count - digitNumber(lhv), ' ')}$lhv\n*${
+            newString(
+                count - digitNumber(rhv) - 1,
+                ' '
+            )
+        }$rhv\n"
+    )
+    writer.write(
+        "${newString(count, '-')}\n${
+            newString(
+                count - digitNumber((rhv % 10) * lhv),
+                ' '
+            )
+        }${(rhv % 10) * lhv}\n"
+    )
     var second = rhv / 10
     var countT = 2 // учитывает знак + и переход
     while (second != 0) {
@@ -502,6 +516,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     writer.write("${newString(count, '-')}\n${newString(count - digitNumber(lhv * rhv), ' ')}${lhv * rhv}")
     writer.close()
 }
+
 // функция делающая строку из n одинаковых символов
 fun newString(n: Int, symbol: Char): String {
     var newLine = ""
