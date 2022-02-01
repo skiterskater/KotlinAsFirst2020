@@ -559,11 +559,13 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var right = countT
     var left = 0
     var n = digitNumber(result) - 1
-    val main = needDigit(left, right, lhv)
+    var main = needDigit(left, right, lhv)
     var minus: Int
-    if (digitNumber(rhv * (revResult % 10)) + 1 < digitNumber(main)) {
+    if (digitNumber(rhv * (revResult % 10)) < digitNumber(needDigit(left, right - 1, lhv))) {
         writer.write("$lhv | $rhv\n")
         count--
+        right--
+        main = needDigit(left, right, lhv)
         minus = main - rhv * (revResult % 10)
         writer.write(
             "-${rhv * (revResult % 10)}${
