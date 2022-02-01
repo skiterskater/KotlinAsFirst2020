@@ -618,7 +618,14 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             left = right
             right++
             if (n == 1) {
-                writer.write("${newString(countT, ' ')}${minus - rhv * (revResult % 10)}")
+                writer.write(
+                    "${
+                        newString(
+                            count - digitNumber(minus - rhv * (revResult % 10)) - 3,
+                            ' '
+                        )
+                    }${minus - rhv * (revResult % 10)}"
+                )
             }
             minus = needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10
             countT++
@@ -627,6 +634,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.close()
     }
 }
+
 // функция считающая нужное значение цифр числа в заданном диапазоне цифр
 fun needDigit(left: Int, right: Int, n: Int): Int {
     val res = n.toString()
