@@ -552,24 +552,39 @@ fun newString(n: Int, symbol: Char): String {
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).writer()
-    writer.write(" $lhv | $rhv\n")
     val result = lhv / rhv
     var revResult = result.toString().reversed().toInt()
     var count = digitNumber(lhv) + 4
-    writer.write(
-        "-${rhv * (revResult % 10)}${
-            newString(
-                count - digitNumber(rhv * (revResult % 10)) - 1,
-                ' '
-            )
-        }$result\n"
-    )
     var countT = digitNumber(rhv * (revResult % 10)) + 1
     var right = countT
     var left = 0
     var n = digitNumber(result) - 1
     val main = needDigit(left, right, lhv)
-    var minus = main - rhv * (revResult % 10) * 10
+    var minus: Int
+    if (digitNumber(rhv * (revResult % 10)) + 1 < digitNumber(main)) {
+        writer.write("$lhv | $rhv\n")
+        count--
+        minus = main - rhv * (revResult % 10)
+        writer.write(
+            "-${rhv * (revResult % 10)}${
+                newString(
+                    count - digitNumber(rhv * (revResult % 10)) - 1,
+                    ' '
+                )
+            }$result\n"
+        )
+    } else {
+        minus = main - rhv * (revResult % 10) * 10
+        writer.write(" $lhv | $rhv\n")
+        writer.write(
+            "-${rhv * (revResult % 10)}${
+                newString(
+                    count - digitNumber(rhv * (revResult % 10)) - 1,
+                    ' '
+                )
+            }$result\n"
+        )
+    }
     writer.write("${newString(countT, '-')}\n")
     if (digitNumber(result) == 1) {
         writer.write("${newString(countT - digitNumber(lhv - result * rhv), ' ')}${lhv - result * rhv}")
@@ -610,7 +625,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.close()
     }
 }
-
 // функция считающая нужное значение цифр числа в заданном диапазоне цифр
 fun needDigit(left: Int, right: Int, n: Int): Int {
     val res = n.toString()
