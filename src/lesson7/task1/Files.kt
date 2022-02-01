@@ -571,49 +571,45 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val main = needDigit(left, right, lhv)
     var minus = main - rhv * (revResult % 10) * 10
     writer.write("${newString(countT, '-')}\n")
-    if (lhv == rhv || digitNumber(lhv) == 1) {
+    if (digitNumber(result) == 1) {
         writer.write("${newString(countT - digitNumber(lhv - result * rhv), ' ')}${lhv - result * rhv}")
         writer.close()
     } else {
-        if (lhv < rhv) {
-            writer.write("${newString(countT - digitNumber(lhv), ' ')}$lhv")
-            writer.close()
-        } else {
-            while (n > 0) {
-                revResult /= 10
-                var countX = max((digitNumber(rhv * (revResult % 10)) + 1), digitNumber(minus))
-                if (digitNumber(minus) == 1) {
-                    writer.write(
-                        "${
-                            newString(
-                                countT - digitNumber(minus),
-                                ' '
-                            )
-                        }0$minus\n"
-                    )
-                    countX = max(digitNumber(rhv * (revResult % 10)), digitNumber(minus) + 1)
-                } else writer.write("${newString(countT - digitNumber(minus) + 1, ' ')}$minus\n")
+        while (n > 0) {
+            revResult /= 10
+            var countX = max((digitNumber(rhv * (revResult % 10)) + 1), digitNumber(minus))
+            if (digitNumber(minus) == 1) {
                 writer.write(
                     "${
                         newString(
-                            countT - digitNumber(rhv * (revResult % 10)),
+                            countT - digitNumber(minus),
                             ' '
                         )
-                    }-${rhv * (revResult % 10)}\n"
+                    }0$minus\n"
                 )
-                writer.write("${newString(right + 1 - countX, ' ')}${newString(countX, '-')}\n")
-                left = right
-                right++
-                if (needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10 > rhv && n == 1) {
-                    writer.write("${newString(countT, ' ')}${minus - rhv * (revResult % 10)}")
-                }
-                minus = needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10
-                countT++
-                n--
+                countX = max(digitNumber(rhv * (revResult % 10)), digitNumber(minus) + 1)
+            } else writer.write("${newString(countT - digitNumber(minus) + 1, ' ')}$minus\n")
+            writer.write(
+                "${
+                    newString(
+                        countT - digitNumber(rhv * (revResult % 10)),
+                        ' '
+                    )
+                }-${rhv * (revResult % 10)}\n"
+            )
+            writer.write("${newString(right + 1 - countX, ' ')}${newString(countX, '-')}\n")
+            left = right
+            right++
+            if (needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10 > rhv && n == 1) {
+                writer.write("${newString(countT, ' ')}${minus - rhv * (revResult % 10)}")
             }
-            writer.close()
+            minus = needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10
+            countT++
+            n--
         }
+        writer.close()
     }
+}
 }
 
 // функция считающая нужное значение цифр числа в заданном диапазоне цифр
