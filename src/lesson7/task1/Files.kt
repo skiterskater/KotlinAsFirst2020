@@ -597,6 +597,9 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         } else {
             while (n > 0) {
                 revResult /= 10
+                if (minus < revResult % 10 * rhv) {
+                    minus = minus * 10 + needDigit(right, right + 1, lhv)
+                }
                 var countX = max((digitNumber(rhv * (revResult % 10)) + 1), digitNumber(minus))
                 if (digitNumber(minus) == 1) {
                     writer.write(
