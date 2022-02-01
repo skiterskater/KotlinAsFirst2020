@@ -567,8 +567,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         if (rhv * (revResult % 10) > needDigit(left, right - 1, lhv)) {
             writer.write("$lhv | $rhv\n")
             count--
-            right--
             main = needDigit(left, right, lhv)
+            right--
             minus = main - rhv * (revResult % 10)
             writer.write(
                 "-${rhv * (revResult % 10)}${
