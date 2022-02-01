@@ -610,7 +610,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.close()
     }
 }
-}
 
 // функция считающая нужное значение цифр числа в заданном диапазоне цифр
 fun needDigit(left: Int, right: Int, n: Int): Int {
