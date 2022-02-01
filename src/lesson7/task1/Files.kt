@@ -561,77 +561,84 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var n = digitNumber(result) - 1
     var main = needDigit(left, right, lhv)
     var minus: Int
-    if (digitNumber(rhv * (revResult % 10)) < digitNumber(needDigit(left, right - 1, lhv))) {
+    if (lhv < rhv && digitNumber(lhv) != 1) {
         writer.write("$lhv | $rhv\n")
-        count--
-        right--
-        main = needDigit(left, right, lhv)
-        minus = main - rhv * (revResult % 10)
-        writer.write(
-            "-${rhv * (revResult % 10)}${
-                newString(
-                    count - digitNumber(rhv * (revResult % 10)) - 1,
-                    ' '
-                )
-            }$result\n"
-        )
-    } else {
-        minus = main - rhv * (revResult % 10) * 10
-        writer.write(" $lhv | $rhv\n")
-        writer.write(
-            "-${rhv * (revResult % 10)}${
-                newString(
-                    count - digitNumber(rhv * (revResult % 10)) - 1,
-                    ' '
-                )
-            }$result\n"
-        )
-    }
-    writer.write("${newString(countT, '-')}\n")
-    if (digitNumber(result) == 1) {
-        writer.write("${newString(countT - digitNumber(lhv - result * rhv), ' ')}${lhv - result * rhv}")
+        writer.write("${newString(digitNumber(lhv) - 2, ' ')}-0   0\n")
+        writer.write("${newString(max(digitNumber(lhv), 2), '-')}\n$lhv")
         writer.close()
     } else {
-        while (n > 0) {
-            revResult /= 10
-            var countX = max((digitNumber(rhv * (revResult % 10)) + 1), digitNumber(minus))
-            if (digitNumber(minus) == 1) {
-                writer.write(
-                    "${
-                        newString(
-                            countT - digitNumber(minus),
-                            ' '
-                        )
-                    }0$minus\n"
-                )
-                countX = max(digitNumber(rhv * (revResult % 10)), digitNumber(minus) + 1)
-            } else writer.write("${newString(countT - digitNumber(minus) + 1, ' ')}$minus\n")
+        if (digitNumber(rhv * (revResult % 10)) < digitNumber(needDigit(left, right - 1, lhv))) {
+            writer.write("$lhv | $rhv\n")
+            count--
+            right--
+            main = needDigit(left, right, lhv)
+            minus = main - rhv * (revResult % 10)
             writer.write(
-                "${
+                "-${rhv * (revResult % 10)}${
                     newString(
-                        countT - digitNumber(rhv * (revResult % 10)),
+                        count - digitNumber(rhv * (revResult % 10)) - 1,
                         ' '
                     )
-                }-${rhv * (revResult % 10)}\n"
+                }$result\n"
             )
-            writer.write("${newString(right + 1 - countX, ' ')}${newString(countX, '-')}\n")
-            left = right
-            right++
-            if (n == 1) {
+        } else {
+            minus = main - rhv * (revResult % 10) * 10
+            writer.write(" $lhv | $rhv\n")
+            writer.write(
+                "-${rhv * (revResult % 10)}${
+                    newString(
+                        count - digitNumber(rhv * (revResult % 10)) - 1,
+                        ' '
+                    )
+                }$result\n"
+            )
+        }
+        writer.write("${newString(countT, '-')}\n")
+        if (digitNumber(result) == 1) {
+            writer.write("${newString(countT - digitNumber(lhv - result * rhv), ' ')}${lhv - result * rhv}")
+            writer.close()
+        } else {
+            while (n > 0) {
+                revResult /= 10
+                var countX = max((digitNumber(rhv * (revResult % 10)) + 1), digitNumber(minus))
+                if (digitNumber(minus) == 1) {
+                    writer.write(
+                        "${
+                            newString(
+                                countT - digitNumber(minus),
+                                ' '
+                            )
+                        }0$minus\n"
+                    )
+                    countX = max(digitNumber(rhv * (revResult % 10)), digitNumber(minus) + 1)
+                } else writer.write("${newString(countT - digitNumber(minus) + 1, ' ')}$minus\n")
                 writer.write(
                     "${
                         newString(
-                            count - digitNumber(minus - rhv * (revResult % 10)) - 3,
+                            countT - digitNumber(rhv * (revResult % 10)),
                             ' '
                         )
-                    }${minus - rhv * (revResult % 10)}"
+                    }-${rhv * (revResult % 10)}\n"
                 )
+                writer.write("${newString(right + 1 - countX, ' ')}${newString(countX, '-')}\n")
+                left = right
+                right++
+                if (n == 1) {
+                    writer.write(
+                        "${
+                            newString(
+                                count - digitNumber(minus - rhv * (revResult % 10)) - 3,
+                                ' '
+                            )
+                        }${minus - rhv * (revResult % 10)}"
+                    )
+                }
+                minus = needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10
+                countT++
+                n--
             }
-            minus = needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10
-            countT++
-            n--
+            writer.close()
         }
-        writer.close()
     }
 }
 
