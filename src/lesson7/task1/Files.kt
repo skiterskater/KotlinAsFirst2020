@@ -571,8 +571,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val main = needDigit(left, right, lhv)
     var minus = main - rhv * (revResult % 10) * 10
     writer.write("${newString(countT, '-')}\n")
-    if (lhv == rhv) {
-        writer.write("${newString(countT - digitNumber(lhv), ' ')}0")
+    if (lhv == rhv || digitNumber(lhv) == 1) {
+        writer.write("${newString(countT - digitNumber(lhv - result * rhv), ' ')}${lhv - result * rhv}")
         writer.close()
     } else {
         if (lhv < rhv) {
