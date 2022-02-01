@@ -236,7 +236,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    var res = mutableMapOf<String, Int>()
+    val res = mutableMapOf<String, Int>()
     for (element in list) {
         if (res[element] == null) res[element] = 1 else res[element] = res[element]!! + 1
     }
@@ -256,6 +256,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean = TODO()
+
 /**
  * Сложная (5 баллов)
  *
@@ -335,15 +336,5 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    var sum = 0
-    var res = mutableSetOf<String>()
-    var balance = capacity
-    for ((treasure, cost) in treasures) {
-        if (balance - cost.first > 0) {
-            sum += cost.second
-            res.add(treasure)
-        } else break
-    }
-    return res
-}
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+

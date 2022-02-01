@@ -270,7 +270,6 @@ fun mostExpensive(description: String): String {
     val str = " $description;"
     return if (description.isNotEmpty() && (str.matches(Regex("""(\s\S+\s((\d+\.\d+)|\d+);)+""")))) {
         val product = description.replace(";", "").split(" ")
-        println(product)
         // переводим нашу строку в список вида: [название товара, цена, название товара, цена и тд.]
         var max = -1.0
         var maxName = ""

@@ -90,7 +90,6 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         res[substring] = countSubstringsWithCross(text, substring.lowercase())
     return res
 }
-
 //функция считающая вхождение строк с пересечением(если начало i-ой строки содержится к конце (i-1)-ой строки
 fun countSubstringsWithCross(text: String, substring: String): Int {
     return if (text.contains(substring)) {
@@ -98,7 +97,7 @@ fun countSubstringsWithCross(text: String, substring: String): Int {
         var i = text.indexOf(substring)
         while (i != -1) {
             i = text.indexOf(substring, i + 1)
-            count += 1
+            count++
         }
         count
     } else 0
@@ -517,7 +516,6 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     writer.write("${newString(count, '-')}\n${newString(count - digitNumber(lhv * rhv), ' ')}${lhv * rhv}")
     writer.close()
 }
-
 // функция делающая строку из n одинаковых символов
 fun newString(n: Int, symbol: Char): String {
     var newLine = ""
@@ -528,7 +526,6 @@ fun newString(n: Int, symbol: Char): String {
     }
     return newLine
 }
-
 
 /**
  * Сложная (25 баллов)
@@ -641,7 +638,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
     }
 }
-
 // функция считающая нужное значение цифр числа в заданном диапазоне цифр
 fun needDigit(left: Int, right: Int, n: Int): Int {
     val res = n.toString()
