@@ -600,7 +600,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             writer.write("${newString(right + 1 - countX, ' ')}${newString(countX, '-')}\n")
             left = right
             right++
-            if (needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10 > rhv && n == 1) {
+            if (n == 1) {
                 writer.write("${newString(countT, ' ')}${minus - rhv * (revResult % 10)}")
             }
             minus = needDigit(left, right, lhv) + (minus - rhv * (revResult % 10)) * 10
