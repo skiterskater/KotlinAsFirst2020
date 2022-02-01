@@ -200,7 +200,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             minName = nameProduct
         }
     }
-    return if (min != Double.MAX_VALUE || kind == "") minName else null
+    return if (min != Double.MAX_VALUE) minName else null
 }
 
 /**

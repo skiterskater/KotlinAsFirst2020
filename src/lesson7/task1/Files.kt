@@ -564,7 +564,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.write("${newString(max(digitNumber(lhv), 2), '-')}\n$lhv")
         writer.close()
     } else {
-        if (digitNumber(rhv * (revResult % 10)) < digitNumber(needDigit(left, right - 1, lhv))) {
+        if (rhv * (revResult % 10) > needDigit(left, right - 1, lhv)) {
             writer.write("$lhv | $rhv\n")
             count--
             right--
