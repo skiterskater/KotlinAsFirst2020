@@ -153,4 +153,39 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
     }
+
+    @Test
+    fun football() {
+        assertEquals(
+            mapOf("Зенит" to 6, "Спартак" to 3), football(
+                "0:1; Зенит:Спартак;" +
+                        "1:0; Зенит:ЦСКА;" +
+                        "0:2; Барнаулец:Зенит;" +
+                        "4:4; Подмосквич:Барнаулец;", listOf("Зенит", "Спартак")
+            )
+        )
+        assertEquals(
+            mapOf("Спартак" to 6, "Зенит" to 4, "Барнаулец" to 0, "Акбарс" to 0), football(
+                "0:1; Зенит:Спартак;" +
+                        "1:1; Зенит:ЦСКА;" +
+                        "0:2; Барнаулец:Зенит;" +
+                        "5:4; Спартак:Барнаулец;", listOf("Зенит", "Спартак", "Барнаулец", "Акбарс")
+            )
+        )
+        assertEquals(
+            mapOf("Спартак" to 6, "Зенит" to 4, "Барнаулец" to 0, "Акбарс" to 0), football(
+                "0:1; Зенит:Спартак;" +
+                        "1:1; Зенит:ЦСКА;" +
+                        "0:2; Барнаулец:Зенит;" +
+                        "5:4; Спартак:Барнаулец;", listOf("Зенит", "Спартак", "Барнаулец", "Акбарс")
+            )
+        )
+        assertThrows(IllegalArgumentException::class.java) {
+            football(
+                "0:1; Зенит:Спартак;" +
+                        "1:1; Зенит:ЦСКА;" +
+                        "0:2; Барнаулец:Зенит;" + " dssdfdskg", listOf("Акбарс", "ЦСКА", "Перекресток")
+            )
+        }
+    }
 }

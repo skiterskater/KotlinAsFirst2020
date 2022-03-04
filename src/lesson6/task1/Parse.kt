@@ -3,8 +3,10 @@
 package lesson6.task1
 
 import lesson1.task1.accountInThreeYears
+import lesson2.task1.timeForHalfWay
 import lesson2.task2.daysInMonth
 import ru.spbstu.wheels.product
+import ru.spbstu.wheels.toMutableMap
 import java.lang.NullPointerException
 import java.util.*
 import kotlin.math.*
@@ -347,3 +349,62 @@ fun fromRoman(roman: String): Int {
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+/**
+ * В строке text содержатся результаты матчей команд
+ * в следующем виде:
+ *
+ * "0:1; Зенит:Спартак;
+ * 1:0; Зенит:ЦСКА;
+ * 0:2; Барнаулец:Зенит;
+ * 4:4; Подмосквич:Барнаулец;"
+ *
+ * Названия команд
+ * состоят только из букв (кириллица/латиница) и чисел; без пробелов,
+ * дефисов, двоеточий и т.д.
+ *
+ * Необходимо подсчитать число очков по следующим правилам:
+ *  - за победу даётся 3 очка
+ *  - за ничью даётся одно очко
+ *  - за проигрыш даётся 0 очков.
+ *
+ * На вход также подается список строк teams, который содержит
+ * названия интересующих нас футбольных команд. Следует вернуть список
+ * команд teams, отсортированных по количеству набранных очков (от
+ * большего к меньшему). Если у двух команд одинаковое количество
+ * очков --- можно располагать
+ * их в любом порядке. Если команда ни разу не играла (т.е. ее имя ни
+ * разу не встречалось в результатах игр text), считать что у нее 0
+ * очков.
+ * При нарушении формата следует выбросить IllegalArgumentException.
+ * Имя функции и тип результата функции предложить самостоятельно;
+ * в задании указан тип Collection<Any>, то есть коллекция объектов
+ * произвольного типа, можно (и нужно) изменить как вид коллекции,
+ * так и тип её элементов.
+ *
+ * Кроме функции, следует написать тесты,
+ * подтверждающие её работоспособность.
+ */
+
+fun football(text: String, teams: List<String>): Map<String, Int> {
+    if (text.matches(Regex("""(\d+:\d+;\s[а-яА-Я\w]+:[а-яА-Я\w]+;)+"""))) {
+        val lines = text.replace(" ", "").split(";")
+        val res = mutableMapOf<String, Int>()
+        for (i in 0 until lines.size - 1 step 2) {
+            val values = lines[i].split(":")
+            val team = lines[i + 1].split(":")
+            if (res[team.first()] == null) res[team.first()] = 0
+            if (res[team.last()] == null) res[team.last()] = 0
+            if (values[0] > values[1]) res[team.first()] = res[team.first()]!! + 3
+            else {
+                if (values[0] == values[1]) {
+                    res[team.first()] = res[team.first()]!! + 1
+                    res[team.last()] = res[team.last()]!! + 1
+                } else
+                    if (values[1] > values[0]) res[team.last()] = res[team.last()]!! + 3
+            }
+        }
+        for (team in teams) if (res[team] == null) res[team] = 0
+        return res.toList().sortedByDescending { (k, v) -> v }.toMutableMap().filter { it.key in teams }
+    } else throw IllegalArgumentException()
+}
