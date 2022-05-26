@@ -10,6 +10,8 @@ import ru.spbstu.wheels.toMutableMap
 import java.lang.NullPointerException
 import java.util.*
 import kotlin.math.*
+import java.lang.IllegalArgumentException
+import java.lang.NumberFormatException
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -256,6 +258,7 @@ fun plusMinus(expression: String): Int {
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int = TODO()
+
 
 /**
  * Сложная (6 баллов)

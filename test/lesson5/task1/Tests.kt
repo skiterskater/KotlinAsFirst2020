@@ -227,6 +227,12 @@ class Tests {
                 "печенье"
             )
         )
+        assertEquals(
+            "карамель", findCheapestStuff(
+                mapOf("карамель" to ("вкусности" to Double.MAX_VALUE)),
+                "вкусности"
+            )
+        )
     }
 
     @Test
@@ -334,6 +340,11 @@ class Tests {
                 mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
                 450
             )
+        )
+        assertEquals(setOf("Шоколад", "Конфеты"),
+            lesson5.task1.bagPacking(
+                mapOf("Шоколад" to (10 to 20), "Конфеты" to (5 to 30)),
+                15)
         )
     }
 }

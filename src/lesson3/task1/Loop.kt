@@ -5,6 +5,8 @@ package lesson3.task1
 import java.lang.Math.pow
 import java.lang.Math.toIntExact
 import kotlin.math.*
+import lesson1.task1.sqr
+import kotlin.math.sqrt
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -114,7 +116,6 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
-
 /**
  * Простая (2 балла)
  *
@@ -131,7 +132,16 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var n = x
+    var k = 0
+    while (n != 1) {
+        if (n % 2 == 0) n /= 2
+        else n = 3 * n + 1
+        k += 1
+    }
+    return k
+}
 
 /**
  * Средняя (3 балла)
@@ -139,7 +149,8 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int = m / greatestCommonDivisor(m, n) * n
+
 
 /**
  * Средняя (3 балла)
@@ -148,7 +159,6 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
 
 /**
  * Средняя (3 балла)
@@ -157,7 +167,15 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var x = n
+    var reverted = 0
+    while (x != 0) {
+        reverted = reverted * 10 + x % 10
+        x /= 10
+    }
+    return reverted
+}
 
 /**
  * Средняя (3 балла)
@@ -168,7 +186,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя (3 балла)
@@ -240,24 +258,4 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
-    var i = 1
-    var c = digitNumber(fib(i))
-    while (c < n) {
-        i++
-        c += digitNumber(fib(i))
-
-    }
-    val k = fib(i)
-    return lastDigit(c, n, k) % 10
-}
-
-fun lastDigit(c: Int, n: Int, k: Int): Int {
-    var countPreviousNumbers = c
-    var currentNumber = k
-    while (countPreviousNumbers > n) {
-        currentNumber /= 10
-        countPreviousNumbers--
-    }
-    return currentNumber
-}
+fun fibSequenceDigit(n: Int): Int = getDigit(n, ::fib)

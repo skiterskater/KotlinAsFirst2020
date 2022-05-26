@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import ru.spbstu.wheels.NullableMonad.filter
+import java.util.*
+import kotlin.math.pow
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -115,7 +118,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((key, value) in a) {
+        if (b[key] != value) return false
+    }
+    return true
+}
 
 /**
  * Простая (2 балла)
@@ -132,7 +140,9 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+    for ((key, value) in b) {
+        if (a[key] == value) a.remove(key)
+    }
 }
 
 /**
@@ -142,7 +152,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
 
 /**
  * Средняя (3 балла)
@@ -192,15 +202,15 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var min = Double.MAX_VALUE
-    var minName = ""
-    for ((nameProduct, kindPrice) in stuff) {
-        if (kindPrice.first == kind && kindPrice.second < min) {
-            min = kindPrice.second
-            minName = nameProduct
+    var result: String? = null
+    var minValue = Double.MAX_VALUE
+    for ((name, description) in stuff) {
+        if (description.first == kind && description.second <= minValue) {
+            result = name
+            minValue = description.second
         }
     }
-    return if (min != Double.MAX_VALUE) minName else null
+    return result
 }
 
 /**
@@ -213,14 +223,12 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    var res = true
-    for (i in word.indices) {
-        if (word[i].lowercaseChar() !in chars && word[i].uppercaseChar() !in chars) {
-            res = false
-            break
-        }
+    val charsToSet = chars.toSet()
+    val newWord = word.lowercase()
+    for (char in newWord) {
+        if (!charsToSet.contains(char) && !charsToSet.contains(char.uppercaseChar())) return false
     }
-    return res
+    return true
 }
 
 /**
